@@ -20,11 +20,10 @@ public class HomeController {
     @GetMapping("/home")
     public String home(HttpSession session, OAuth2AuthenticationToken authenticationToken, Model model) {
         OAuth2User principal = authenticationToken.getPrincipal();
-        session.setAttribute("principal", principal);
 
         String email = principal.getAttribute("email");
-
         User user = userRepository.findByEmail(email).orElseThrow();
+        session.setAttribute("principalUser", user);
 
         model.addAttribute("user", user);
         return "home";

@@ -1,6 +1,8 @@
 package me.mmtr.koala.controller;
 
+import jakarta.servlet.http.HttpSession;
 import me.mmtr.koala.data.Article;
+import me.mmtr.koala.data.User;
 import me.mmtr.koala.repository.dao.ArticleDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +24,12 @@ public class ArticleController {
     }
 
     @PostMapping("/new")
-    public String saveNewArticle(@ModelAttribute("article") Article article) {
+    public String saveNewArticle(HttpSession session, @ModelAttribute("article") Article article) {
+        User user = (User) session.getAttribute("principalUser");
+
+        article.setAuthor(user.getName());
         this.articleDAO.create(article);
-        return "redirect:/home";
+        return "redirect:/articles/view/" + article.getId();
     }
 
     @GetMapping("/update/{articleId}")

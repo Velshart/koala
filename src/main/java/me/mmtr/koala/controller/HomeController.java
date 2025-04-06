@@ -1,5 +1,6 @@
 package me.mmtr.koala.controller;
 
+import jakarta.servlet.http.HttpSession;
 import me.mmtr.koala.data.User;
 import me.mmtr.koala.repository.UserRepository;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -17,8 +18,10 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String home(OAuth2AuthenticationToken authenticationToken, Model model) {
+    public String home(HttpSession session, OAuth2AuthenticationToken authenticationToken, Model model) {
         OAuth2User principal = authenticationToken.getPrincipal();
+        session.setAttribute("principal", principal);
+
         String email = principal.getAttribute("email");
 
         User user = userRepository.findByEmail(email).orElseThrow();

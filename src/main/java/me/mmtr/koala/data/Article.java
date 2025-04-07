@@ -23,15 +23,11 @@ public class Article {
 
     private String author;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "article_chapters", joinColumns = {
-            @JoinColumn(name = "article_id", referencedColumnName = "id")
-    }, inverseJoinColumns = {
-            @JoinColumn(name = "chapter_id", referencedColumnName = "id")
-    })
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticleChapter> chapters = new ArrayList<>();
 
     public void addChapter(ArticleChapter chapter) {
+        chapter.setArticle(this);
         chapters.add(chapter);
     }
 }

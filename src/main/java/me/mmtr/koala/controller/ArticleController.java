@@ -54,7 +54,9 @@ public class ArticleController {
     @GetMapping("/view/{articleId}")
     public String viewArticle(@PathVariable Long articleId, Model model) {
         Article article = articleDAO.findById(articleId);
+
         model.addAttribute("article", article);
+        model.addAttribute("articleChapters", article.getChapters());
         return "article-view";
     }
 }

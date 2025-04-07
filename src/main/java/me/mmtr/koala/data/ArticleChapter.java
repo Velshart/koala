@@ -23,4 +23,8 @@ public class ArticleChapter {
     private String content;
 
     private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id")
+    private Article article;
 }

@@ -15,7 +15,47 @@
 
 <form action="/home" method="get">
     <button type="submit" class="btn btn-primary">Home</button>
-</form>
+</form><br>
+
+<form action="/article-chapters/new/{{article.id}}" method="get">
+    <button type="submit" class="btn btn-primary">New chapter</button>
+</form><br>
+
+<h3>Chapters</h3>
+
+<div class="row row-cols-1 g-3">
+
+    {{#articleChapters}}
+        <div class="col">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+                    <h5 class="card-title">{{title}}</h5>
+                    <p class="card-text"><small class="text-muted">Created at: {{createdAt}}</small></p>
+
+                    <div class="d-flex gap-2">
+                        <form action="/article-chapters/view/{{id}}" method="get">
+                            <input type="hidden" name="articleId" value="{{article.id}}">
+                            <button type="submit" class="btn btn-outline-primary btn-sm">View</button>
+                        </form>
+
+                        <form action="/article-chapters/delete/{{id}}" method="post">
+                            <input type="hidden" name="articleId" value="{{article.id}}">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    {{/articleChapters}}
+
+    {{^articleChapters}}
+        <p>This article has no chapters.</p>
+    {{/articleChapters}}
+</div>
 
 </body>
 </html>

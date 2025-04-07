@@ -1,15 +1,13 @@
 package me.mmtr.koala.controller;
 
+import jakarta.transaction.Transactional;
 import me.mmtr.koala.data.Article;
 import me.mmtr.koala.data.ArticleChapter;
 import me.mmtr.koala.repository.dao.ArticleChapterDAO;
 import me.mmtr.koala.repository.dao.ArticleDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -28,17 +26,21 @@ public class ArticleChapterController {
     @GetMapping("/new/{articleId}")
     public String newArticleChapter(@PathVariable Long articleId, Model model) {
         model.addAttribute("articleChapter", new ArticleChapter());
+        model.addAttribute("articleId", articleId);
+
         return "new-article-chapter";
     }
 
     @PostMapping("/new/{articleId}")
-    public String saveArticleChapter(@PathVariable Long articleId, ArticleChapter articleChapter) {
+    public String saveArticleChapter(@PathVariable Long articleId,
+                                     @ModelAttribute("articleChapter") ArticleChapter articleChapter) {
         Article article = articleDAO.findById(articleId);
 
         articleChapter.setCreatedAt(LocalDateTime.now());
         article.addChapter(articleChapter);
 
-        articleChapterDAO.create(articleChapter);
+        article.addChapter(articleChapter);
+
         articleDAO.update(article);
 
         return "redirect:/articles/view/" + articleId;
@@ -50,6 +52,7 @@ public class ArticleChapterController {
                                        Model model) {
         ArticleChapter articleChapter = articleChapterDAO.findById(articleChapterId);
         model.addAttribute("articleChapter", articleChapter);
+        model.addAttribute("articleId", articleId);
 
         return "update-article-chapter";
     }
@@ -63,8 +66,19 @@ public class ArticleChapterController {
     }
 
     @PostMapping("/delete/{articleChapterId}")
-    public String deleteArticleChapter(@PathVariable Long articleChapterId) {
+    public String deleteArticleChapter(@RequestParam Long articleId, @PathVariable Long articleChapterId) {
         articleChapterDAO.deleteById(articleChapterId);
-        return "redirect:/home";
+        return "redirect:/articles/view/" + articleId;
+    }
+
+    @GetMapping("/view/{articleChapterId}")
+    @Transactional
+    public String viewArticleChapter(@PathVariable Long articleChapterId, @RequestParam Long articleId, Model model) {
+        ArticleChapter articleChapter = articleChapterDAO.findById(articleChapterId);
+
+        model.addAttribute("articleChapter", articleChapter);
+        model.addAttribute("articleId", articleId);
+
+        return "article-chapter-view";
     }
 }

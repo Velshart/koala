@@ -10,44 +10,52 @@
     >
 </head>
 <body>
-<form action="/articles/new" method="get">
-    <button type="submit" class="btn btn-success">Create new article</button>
-</form><br>
+<div class="container">
+    <div class="btn-group" role="group">
+        <form action="/articles/new" method="get" class="me-2">
+            <button type="submit" class="btn btn-success">Create new article</button>
+        </form>
 
-<h3>Your articles</h3>
+        <form action="/logout" method="get">
+            <button type="submit" class="btn btn-danger">Log out</button>
+        </form>
+    </div>
 
-<div class="row row-cols-1 g-3">
+    <h3>Your articles</h3>
 
-    {{#userArticles}}
-        <div class="col">
+    <div class="row row-cols-1 g-3">
 
-            <div class="card shadow-sm">
+        {{#userArticles}}
+            <div class="col">
 
-                <div class="card-body">
-                    <h5 class="card-title">{{title}}</h5>
+                <div class="card shadow-sm">
 
-                    <p class="card-text"><small class="text-muted">Created at: {{createdAt}}</small></p>
+                    <div class="card-body">
+                        <h5 class="card-title">{{title}}</h5>
 
-                    <div class="d-flex gap-2">
-                        <form action="/articles/view/{{id}}" method="get">
-                            <input type="hidden" name="articleId" value="{{id}}">
-                            <button type="submit" class="btn btn-outline-primary btn-sm">View</button>
-                        </form>
+                        <p class="card-text"><small class="text-muted">Created at: {{createdAt}}</small></p>
 
-                        <form action="/articles/delete/{{id}}" method="post">
-                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                        </form>
+                        <div class="d-flex gap-2">
+                            <form action="/articles/view/{{id}}" method="get">
+                                <input type="hidden" name="articleId" value="{{id}}">
+                                <button type="submit" class="btn btn-outline-primary btn-sm">View</button>
+                            </form>
+
+                            <form action="/articles/delete/{{id}}" method="post">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
                     </div>
+
                 </div>
 
             </div>
+        {{/userArticles}}
 
-        </div>
-    {{/userArticles}}
-
-    {{^userArticles}}
-        <p>You have no articles yet.</p>
-    {{/userArticles}}
+        {{^userArticles}}
+            <p>You have no articles yet.</p>
+        {{/userArticles}}
+    </div>
 </div>
 </body>
 </html>

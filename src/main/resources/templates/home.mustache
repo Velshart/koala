@@ -26,6 +26,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{title}}</h5>
 
+                    <p class="card-text"><small class="text-muted">Created at: {{createdAt}}</small></p>
+
                     <div class="d-flex gap-2">
                         <form action="/articles/view/{{id}}" method="get">
                             <input type="hidden" name="articleId" value="{{id}}">

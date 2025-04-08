@@ -23,6 +23,8 @@ public class Article {
 
     private String author;
 
+    private String createdAt;
+
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticleChapter> chapters = new ArrayList<>();
 
@@ -30,4 +32,5 @@ public class Article {
         chapter.setArticle(this);
         chapters.add(chapter);
     }
+
 }

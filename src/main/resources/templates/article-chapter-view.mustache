@@ -17,13 +17,13 @@
     <div class="form-group">
         <label for="content">Content</label>
         <textarea class="form-control" id="content" rows="20" disabled>{{articleChapter.content}}</textarea>
-    </div>
+    </div><br>
 
     <div class="form-group">
         <form action="/article-chapters/update/{{articleChapter.id}}" method="get">
             <button class="btn btn-primary">Edit</button>
         </form>
-    </div>
+    </div><br>
 
     <div class="form-group">
         <form action="/articles/view/{{articleId}}" method="get">

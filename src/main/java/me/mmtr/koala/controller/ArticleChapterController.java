@@ -5,6 +5,7 @@ import me.mmtr.koala.data.Article;
 import me.mmtr.koala.data.ArticleChapter;
 import me.mmtr.koala.repository.dao.ArticleChapterDAO;
 import me.mmtr.koala.repository.dao.ArticleDAO;
+import me.mmtr.koala.util.FormatUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class ArticleChapterController {
                                      @ModelAttribute("articleChapter") ArticleChapter articleChapter) {
         Article article = articleDAO.findById(articleId);
 
-        articleChapter.setCreatedAt(LocalDateTime.now());
+        articleChapter.setCreatedAt(FormatUtil.formatDateTime(LocalDateTime.now()));
         article.addChapter(articleChapter);
 
         article.addChapter(articleChapter);
@@ -59,7 +60,7 @@ public class ArticleChapterController {
 
     @PostMapping("/update/{articleId}/{articleChapterId}")
     public String updateArticleChapter(@PathVariable Long articleId, ArticleChapter articleChapter) {
-        articleChapter.setCreatedAt(LocalDateTime.now());
+        articleChapter.setCreatedAt(FormatUtil.formatDateTime(LocalDateTime.now()));
         articleChapterDAO.update(articleChapter);
 
         return "redirect:/articles/view/" + articleId;

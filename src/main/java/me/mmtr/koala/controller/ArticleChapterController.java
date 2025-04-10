@@ -1,6 +1,5 @@
 package me.mmtr.koala.controller;
 
-import jakarta.transaction.Transactional;
 import me.mmtr.koala.data.Article;
 import me.mmtr.koala.data.ArticleChapter;
 import me.mmtr.koala.repository.dao.ArticleChapterDAO;
@@ -73,7 +72,6 @@ public class ArticleChapterController {
     }
 
     @GetMapping("/view/{articleChapterId}")
-    @Transactional
     public String viewArticleChapter(@PathVariable Long articleChapterId, @RequestParam Long articleId, Model model) {
         ArticleChapter articleChapter = articleChapterDAO.findById(articleChapterId);
 

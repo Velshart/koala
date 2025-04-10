@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Data
@@ -31,6 +32,7 @@ public class Article {
     public void addChapter(ArticleChapter chapter) {
         chapter.setArticle(this);
         chapters.add(chapter);
-    }
 
+        chapters.sort(Comparator.comparing(ArticleChapter::getCreatedAt).reversed());
+    }
 }

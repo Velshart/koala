@@ -40,7 +40,7 @@ public class ArticleController {
     public String updateArticle(@PathVariable Long articleId, Model model) {
         Article article = articleDAO.findById(articleId);
         model.addAttribute("article", article);
-        return "update-article";
+        return "update-article-title";
     }
 
     @PostMapping("/update/{articleId}")

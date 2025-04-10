@@ -51,6 +51,7 @@ public class ArticleChapterController {
                                        @PathVariable Long articleChapterId,
                                        Model model) {
         ArticleChapter articleChapter = articleChapterDAO.findById(articleChapterId);
+
         model.addAttribute("articleChapter", articleChapter);
         model.addAttribute("articleId", articleId);
 
@@ -58,8 +59,15 @@ public class ArticleChapterController {
     }
 
     @PostMapping("/update/{articleId}/{articleChapterId}")
-    public String updateArticleChapter(@PathVariable Long articleId, ArticleChapter articleChapter) {
-        articleChapter.setCreatedAt(FormatUtil.formatDateTime(LocalDateTime.now()));
+    public String updateArticleChapter(@PathVariable Long articleId,
+                                       @PathVariable Long articleChapterId,
+                                       @RequestParam String createdAt,
+                                       @ModelAttribute ArticleChapter articleChapter) {
+
+
+        articleChapter.setId(articleChapterId);
+        articleChapter.setArticle(articleDAO.findById(articleId));
+        articleChapter.setCreatedAt(createdAt);
         articleChapterDAO.update(articleChapter);
 
         return "redirect:/articles/view/" + articleId;

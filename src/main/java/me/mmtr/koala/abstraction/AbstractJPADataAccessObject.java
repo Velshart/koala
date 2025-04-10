@@ -1,4 +1,4 @@
-package me.mmtr.koala.repository.dao;
+package me.mmtr.koala.abstraction;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -28,8 +28,8 @@ public abstract class AbstractJPADataAccessObject<T> {
         entityManager.persist(entity);
     }
 
-    public T update(T entity) {
-        return entityManager.merge(entity);
+    public void update(T entity) {
+        entityManager.merge(entity);
     }
 
     public void delete(T entity) {

@@ -20,7 +20,8 @@
     </div><br>
 
     <div class="form-group">
-        <form action="/article-chapters/update/{{articleChapter.id}}" method="get">
+        <form action="/article-chapters/update/{{articleId}}/{{articleChapter.id}}" method="get">
+            <input type="hidden" name="createdAt" value="{{articleChapter.createdAt}}">
             <button class="btn btn-primary">Edit</button>
         </form>
     </div><br>

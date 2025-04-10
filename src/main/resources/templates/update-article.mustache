@@ -11,5 +11,30 @@
 </head>
 <body>
 
+<div class="container mt-5">
+    <h1 class="mb-4">Change title</h1>
+
+    <form method="post">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    placeholder="Enter title"
+                    value="{{article.title}}"
+                    maxlength="150"
+                    required
+            >
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form><br>
+
+    <form action="/home" method="get">
+        <button type="submit" class="btn btn-primary">Home</button>
+    </form>
+</div>
+
 </body>
 </html>

@@ -44,9 +44,19 @@ public class ArticleController {
     }
 
     @PostMapping("/update/{articleId}")
-    public String updateArticle(@ModelAttribute("article") Article article) {
+    public String updateArticle(HttpSession session,
+                                @PathVariable Long articleId,
+                                @RequestParam String createdAt,
+                                @ModelAttribute("article") Article article) {
+        User user = (User) session.getAttribute("principalUser");
+        Article articleBeforeChange = articleDAO.findById(articleId);
+
+        article.setId(articleId);
+        article.setAuthor(user.getName());
+        article.setCreatedAt(createdAt);
+        article.setChapters(articleBeforeChange.getChapters());
         this.articleDAO.update(article);
-        return "redirect:/home";
+        return "redirect:/articles/view/" + articleId;
     }
 
     @PostMapping("/delete/{articleId}")

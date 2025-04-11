@@ -1,8 +1,8 @@
 package me.mmtr.koala.controller;
 
 import jakarta.servlet.http.HttpSession;
-import me.mmtr.koala.data.Article;
-import me.mmtr.koala.data.User;
+import me.mmtr.koala.model.Article;
+import me.mmtr.koala.model.User;
 import me.mmtr.koala.repository.UserRepository;
 import me.mmtr.koala.repository.dao.ArticleDAO;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;

@@ -1,6 +1,6 @@
 package me.mmtr.koala.repository;
 
-import me.mmtr.koala.data.User;
+import me.mmtr.koala.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

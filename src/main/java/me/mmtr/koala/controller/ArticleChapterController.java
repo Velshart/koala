@@ -1,7 +1,7 @@
 package me.mmtr.koala.controller;
 
-import me.mmtr.koala.data.Article;
-import me.mmtr.koala.data.ArticleChapter;
+import me.mmtr.koala.model.Article;
+import me.mmtr.koala.model.ArticleChapter;
 import me.mmtr.koala.repository.dao.ArticleChapterDAO;
 import me.mmtr.koala.repository.dao.ArticleDAO;
 import me.mmtr.koala.util.FormatUtil;
@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "/article-chapters")
@@ -79,13 +80,21 @@ public class ArticleChapterController {
         return "redirect:/articles/view/" + articleId;
     }
 
-    @GetMapping("/view/{articleChapterId}")
-    public String viewArticleChapter(@PathVariable Long articleChapterId, @RequestParam Long articleId, Model model) {
-        ArticleChapter articleChapter = articleChapterDAO.findById(articleChapterId);
+    @GetMapping("/view/{articleId}/{index}")
+    public String articleChapterView(@PathVariable Long articleId,
+                                     @PathVariable int index, Model model) {
+        List<ArticleChapter> articleChapters = articleDAO.findById(articleId).getChapters();
 
-        model.addAttribute("articleChapter", articleChapter);
+        if (index < 0) index = 0;
+        if (index >= articleChapters.size()) index = articleChapters.size() - 1;
+
         model.addAttribute("articleId", articleId);
-
+        model.addAttribute("articleChapter", articleChapters.get(index));
+        model.addAttribute("currentIndex", index);
+        model.addAttribute("previousIndex", index - 1);
+        model.addAttribute("nextIndex", index + 1);
+        model.addAttribute("hasPrevious", index > 0);
+        model.addAttribute("hasNext", index < articleChapters.size() - 1);
         return "article-chapter-view";
     }
 }

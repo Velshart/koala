@@ -1,7 +1,7 @@
 package me.mmtr.koala.repository.dao;
 
 import me.mmtr.koala.abstraction.AbstractJPADataAccessObject;
-import me.mmtr.koala.data.ArticleChapter;
+import me.mmtr.koala.model.ArticleChapter;
 import org.springframework.stereotype.Repository;
 
 @Repository

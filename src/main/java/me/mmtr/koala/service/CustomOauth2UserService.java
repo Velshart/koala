@@ -1,6 +1,6 @@
 package me.mmtr.koala.service;
 
-import me.mmtr.koala.data.User;
+import me.mmtr.koala.model.User;
 import me.mmtr.koala.repository.UserRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

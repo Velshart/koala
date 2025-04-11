@@ -1,8 +1,8 @@
 package me.mmtr.koala.controller;
 
 import jakarta.servlet.http.HttpSession;
-import me.mmtr.koala.data.Article;
-import me.mmtr.koala.data.User;
+import me.mmtr.koala.model.Article;
+import me.mmtr.koala.model.User;
 import me.mmtr.koala.repository.dao.ArticleDAO;
 import me.mmtr.koala.util.FormatUtil;
 import org.springframework.stereotype.Controller;
@@ -70,7 +70,8 @@ public class ArticleController {
         Article article = articleDAO.findById(articleId);
 
         model.addAttribute("article", article);
-        model.addAttribute("articleChapters", article.getChapters());
+        model.addAttribute("articleChapters",
+                article.mapArticleChapterListToIndexedArticleChapterList());
         return "article-view";
     }
 }

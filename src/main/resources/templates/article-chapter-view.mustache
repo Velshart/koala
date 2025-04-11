@@ -8,27 +8,46 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous"
     >
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    >
 </head>
 <body>
 
 <div class="container mt-5">
-    <h1 class="mb-4">Chapter: {{articleChapter.title}}</h1>
+    <div>
+        <h1 class="mb-4">Chapter: {{articleChapter.title}}</h1>
 
-    <div class="form-group">
-        <label for="content">Content</label>
-        <textarea class="form-control" id="content" rows="20" disabled>{{articleChapter.content}}</textarea>
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea class="form-control" id="content" rows="20" disabled>{{articleChapter.content}}</textarea>
+        </div>
+        <br>
+
+        <div class="btn-group gap-2" role="group">
+
+            <form action="/articles/view/{{articleId}}" method="get">
+                <button type="submit" class="btn btn-primary">Back to chapters list</button>
+            </form>
+
+            <form action="/article-chapters/update/{{articleId}}/{{articleChapter.id}}" method="get">
+                <input type="hidden" name="createdAt" value="{{articleChapter.createdAt}}">
+                <button class="btn btn-primary">Edit</button>
+            </form>
+
+        </div>
     </div><br>
 
-    <div class="form-group">
-        <form action="/article-chapters/update/{{articleId}}/{{articleChapter.id}}" method="get">
-            <input type="hidden" name="createdAt" value="{{articleChapter.createdAt}}">
-            <button class="btn btn-primary">Edit</button>
+    <div class="btn-group gap-2" role="group">
+        <form action="/article-chapters/view/{{articleId}}/{{previousIndex}}" method="get"
+              {{^hasPrevious}}class="disabled"{{/hasPrevious}}>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-arrow-left"></i> Previous</button>
         </form>
-    </div><br>
 
-    <div class="form-group">
-        <form action="/articles/view/{{articleId}}" method="get">
-            <button type="submit" class="btn btn-primary">Back</button>
+        <form action="/article-chapters/view/{{articleId}}/{{nextIndex}}" method="get"
+              {{^hasNext}}class="disabled"{{/hasNext}}>
+            <button type="submit" class="btn btn-primary">Next <i class="bi bi-arrow-right"></i></button>
         </form>
     </div>
 </div>

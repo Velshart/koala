@@ -39,16 +39,15 @@
                 <div class="card shadow-sm">
 
                     <div class="card-body">
-                        <h5 class="card-title">{{title}}</h5>
-                        <p class="card-text"><small class="text-muted">Created at: {{createdAt}}</small></p>
+                        <h5 class="card-title">{{articleChapter.title}}</h5>
+                        <p class="card-text"><small class="text-muted">Created at: {{articleChapter.createdAt}}</small></p>
 
                         <div class="d-flex gap-2">
-                            <form action="/article-chapters/view/{{id}}" method="get">
-                                <input type="hidden" name="articleId" value="{{article.id}}">
+                            <form action="/article-chapters/view/{{article.id}}/{{index}}" method="get">
                                 <button type="submit" class="btn btn-outline-primary btn-sm">View</button>
                             </form>
 
-                            <form action="/article-chapters/delete/{{id}}" method="post">
+                            <form action="/article-chapters/delete/{{articleChapter.id}}" method="post">
                                 <input type="hidden" name="articleId" value="{{article.id}}">
                                 <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                             </form>

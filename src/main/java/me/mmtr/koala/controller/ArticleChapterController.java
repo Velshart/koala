@@ -63,6 +63,7 @@ public class ArticleChapterController {
     public String updateArticleChapter(@PathVariable Long articleId,
                                        @PathVariable Long articleChapterId,
                                        @RequestParam String createdAt,
+                                       @RequestParam int articleIndex,
                                        @ModelAttribute ArticleChapter articleChapter) {
 
 
@@ -71,7 +72,7 @@ public class ArticleChapterController {
         articleChapter.setCreatedAt(createdAt);
         articleChapterDAO.update(articleChapter);
 
-        return "redirect:/articles/view/" + articleId;
+        return String.format("redirect:/article-chapters/view/%s/%s", articleId, articleIndex);
     }
 
     @PostMapping("/delete/{articleChapterId}")

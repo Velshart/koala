@@ -24,6 +24,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
+                        .requestMatchers("/fragments/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
@@ -31,7 +32,7 @@ public class SecurityConfiguration {
                                 .userService(customOauth2UserService)
                         )
                         .successHandler((request, response, authentication) ->
-                                response.sendRedirect("/home"))
+                                response.sendRedirect("/"))
                 ).csrf(AbstractHttpConfigurer::disable)
                 .build();
     }

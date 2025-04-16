@@ -11,6 +11,8 @@
 </head>
 <body>
 
+<div th:replace="~{fragments/navigation :: navigation}"></div>
+
 <div class="container mt-5">
   <h1 class="mb-4">Create new article</h1>
 
@@ -30,7 +32,7 @@
     <button type="submit" class="btn btn-primary">Create article</button>
   </form><br>
 
-  <form th:action="@{/home}" method="get">
+  <form th:action="@{/}" method="get">
     <button type="submit" class="btn btn-warning">Cancel</button>
   </form>
 </div>

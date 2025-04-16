@@ -11,11 +11,13 @@
 </head>
 <body>
 
+<div th:replace="~{fragments/navigation :: navigation}"></div>
+
 <div class="container">
     <h1 th:text="${article.title}"></h1>
 
     <div class="btn-group gap-2" role="group">
-        <form action="/home" method="get">
+        <form th:action="@{/}" method="get">
             <button type="submit" class="btn btn-primary">Exit</button>
         </form>
         <br>

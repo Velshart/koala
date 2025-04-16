@@ -40,8 +40,6 @@ public class ApplicationMainController {
             userArticles = new ArrayList<>();
         }
 
-        model.addAttribute("activePage", "home");
-
         session.setAttribute("principalUser", user);
         session.setAttribute("authTokenPrincipal", authenticationToken.getPrincipal());
         model.addAttribute("userArticles", userArticles);
@@ -52,8 +50,6 @@ public class ApplicationMainController {
     @GetMapping("/profile")
     public String profile(HttpSession session, Model model) {
         OAuth2User principal = (OAuth2User) session.getAttribute("authTokenPrincipal");
-
-        model.addAttribute("activePage", "profile");
 
         model.addAttribute("authTokenPrincipalName", principal.getAttribute("name"));
         model.addAttribute("authTokenPrincipalEmail", principal.getAttribute("email"));

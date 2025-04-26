@@ -1,5 +1,6 @@
 package me.mmtr.koala.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import me.mmtr.koala.model.Article;
 import me.mmtr.koala.model.User;
@@ -26,7 +27,7 @@ public class ApplicationMainController {
     }
 
     @GetMapping("/")
-    public String home(@RequestParam(required = false) String keyword, HttpSession session,
+    public String home(HttpServletRequest request, @RequestParam(required = false) String keyword, HttpSession session,
                        OAuth2AuthenticationToken authenticationToken, Model model) {
         if (authenticationToken == null) {
             return "redirect:/login";
@@ -41,6 +42,7 @@ public class ApplicationMainController {
             username = user.getName();
         }
         List<Article> articles;
+        System.out.println("keyword: " + keyword);
         if (keyword != null) {
             articles = getAllArticlesExceptPrincipal(username)
                     .filter(article -> article.getTitle().contains(keyword))
@@ -53,6 +55,7 @@ public class ApplicationMainController {
         session.setAttribute("authTokenPrincipal", authenticationToken.getPrincipal());
         model.addAttribute("articles", articles);
         model.addAttribute("user", user);
+        model.addAttribute("requestURI", request.getRequestURI());
         return "index";
     }
 

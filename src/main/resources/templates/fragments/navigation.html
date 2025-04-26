@@ -30,12 +30,11 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/profile}">Profile</a>
                 </li>
 
-                <li class="yourArticlesNavbarItem">
-                    <a class="nav-link active" aria-current="page" th:href="@{/}">Your articles</a>
+                <li class="profileNavbarItem">
+                    <a class="nav-link active" aria-current="page" th:href="@{/articles/user-articles}">Your articles</a>
                 </li>
             </ul>
-
-            <form th:action="@{/}" class="d-flex" role="search" method="get">
+            <form th:action="@{${requestURI == '/' ? '/' : '/articles/user-articles'}}" class="d-flex" role="search" method="get">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>

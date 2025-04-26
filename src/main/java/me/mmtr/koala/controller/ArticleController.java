@@ -1,5 +1,6 @@
 package me.mmtr.koala.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import me.mmtr.koala.model.Article;
 import me.mmtr.koala.model.User;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "/articles")
@@ -18,6 +20,26 @@ public class ArticleController {
 
     public ArticleController(ArticleDAO articleDAO) {
         this.articleDAO = articleDAO;
+    }
+
+    @GetMapping("/user-articles")
+    public String articles(HttpServletRequest request, @RequestParam(required = false) String keyword, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("principalUser");
+
+        List<Article> articles = articleDAO.findAll()
+                        .stream()
+                        .filter(article -> {
+                            if (keyword != null) {
+                                return article.getAuthor().equalsIgnoreCase(user.getName()) &&
+                                        article.getTitle().contains(keyword);
+                            }
+                            return article.getAuthor().equalsIgnoreCase(user.getName());
+                        })
+                        .toList();
+
+        model.addAttribute("articles", articles);
+        model.addAttribute("requestURI", request.getRequestURI());
+        return "user-articles";
     }
 
     @GetMapping("/new")

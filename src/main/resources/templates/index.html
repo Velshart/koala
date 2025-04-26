@@ -37,18 +37,19 @@
 
                     <p class="card-text"><small class="text-muted" th:text="'Author: ' + ${article.author}"></small></p>
                     <p class="card-text"><small class="text-muted" th:text="'Created at: ' + ${article.createdAt}"></small></p>
-                </div>
 
-                <form th:action="@{/articles/view/{id}(id=${article.id})}" method="get">
-                    <input type="hidden" name="articleId" th:value="${article.id}">
-                    <button type="submit" class="btn btn-outline-primary btn-sm">View</button>
-                </form>
+                    <form th:action="@{/articles/view/{id}(id=${article.id})}" method="get">
+                        <input type="hidden" name="articleId" th:value="${article.id}">
+                        <button type="submit" class="btn btn-outline-primary btn-sm">View</button>
+                    </form>
+
+                </div>
 
             </div>
         </div>
 
         <div th:if="${#lists.isEmpty(articles)}">
-            <p>You have no articles yet.</p>
+            <p>No articles found.</p>
         </div>
 
     </div>

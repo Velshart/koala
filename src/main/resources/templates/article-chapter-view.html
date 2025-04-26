@@ -33,7 +33,7 @@
                 <button type="submit" class="btn btn-primary">Back to chapters list</button>
             </form>
 
-            <form th:action="@{/article-chapters/update/{articleId}/{articleChapterId}(articleId=${articleId}, articleChapterId=${articleChapter.id})}" method="get">
+            <form th:if="${isPrincipalAnAuthor}" th:action="@{/article-chapters/update/{articleId}/{articleChapterId}(articleId=${articleId}, articleChapterId=${articleChapter.id})}" method="get">
                 <input type="hidden" name="createdAt" th:value="${articleChapter.createdAt}">
                 <input type="hidden" name="articleIndex" th:value="${index}">
                 <button class="btn btn-primary">Edit</button>

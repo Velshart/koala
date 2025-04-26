@@ -1,7 +1,9 @@
 package me.mmtr.koala.controller;
 
+import jakarta.servlet.http.HttpSession;
 import me.mmtr.koala.model.Article;
 import me.mmtr.koala.model.ArticleChapter;
+import me.mmtr.koala.model.User;
 import me.mmtr.koala.repository.dao.ArticleChapterDAO;
 import me.mmtr.koala.repository.dao.ArticleDAO;
 import me.mmtr.koala.util.FormatUtil;
@@ -82,15 +84,21 @@ public class ArticleChapterController {
     }
 
     @GetMapping("/view/{articleId}/{index}")
-    public String articleChapterView(@PathVariable Long articleId,
+    public String articleChapterView(HttpSession session,
+                                     @PathVariable Long articleId,
                                      @PathVariable int index, Model model) {
+        User principalUser = (User) session.getAttribute("principalUser");
         List<ArticleChapter> articleChapters = articleDAO.findById(articleId).getChapters();
 
         if (index < 0) index = 0;
         if (index >= articleChapters.size()) index = articleChapters.size() - 1;
 
+        ArticleChapter articleChapter = articleChapters.get(index);
+
+        model.addAttribute("isPrincipalAnAuthor",
+                articleChapter.getArticle().getAuthor().equals(principalUser.getName()));
         model.addAttribute("articleId", articleId);
-        model.addAttribute("articleChapter", articleChapters.get(index));
+        model.addAttribute("articleChapter", articleChapter);
         model.addAttribute("currentIndex", index);
         model.addAttribute("previousIndex", index - 1);
         model.addAttribute("nextIndex", index + 1);

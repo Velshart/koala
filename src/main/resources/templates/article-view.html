@@ -15,6 +15,7 @@
 
 <div class="container">
     <h1 th:text="${article.title}"></h1>
+    <h6 th:text="'by ' + ${article.author}"></h6>
 
     <div class="btn-group gap-2" role="group">
         <form th:action="@{/}" method="get">
@@ -22,16 +23,20 @@
         </form>
         <br>
 
-        <form th:action="@{/article-chapters/new/{articleId}(articleId=${article.id})}" method="get">
-            <button type="submit" class="btn btn-primary">New chapter</button>
-        </form>
-        <br>
+        <div th:if="${isPrincipalAnAuthor}" class="btn-group gap-2" role="group">
 
-        <form th:action="@{/articles/update/{articleId}(articleId=${article.id})}" method="get">
-            <input type="hidden" name="createdAt" th:value="${article.createdAt}">
-            <button type="submit" class="btn btn-primary">Change title</button>
-        </form>
-        <br>
+            <form th:action="@{/article-chapters/new/{articleId}(articleId=${article.id})}" method="get">
+                <button type="submit" class="btn btn-primary">New chapter</button>
+            </form>
+            <br>
+
+            <form th:action="@{/articles/update/{articleId}(articleId=${article.id})}" method="get">
+                <input type="hidden" name="createdAt" th:value="${article.createdAt}">
+                <button type="submit" class="btn btn-primary">Change title</button>
+            </form>
+            <br>
+
+        </div>
     </div>
 
     <h3>Chapters</h3>
@@ -51,7 +56,7 @@
                             <button type="submit" class="btn btn-outline-primary btn-sm">View</button>
                         </form>
 
-                        <form th:action="@{/article-chapters/delete/{articleChapterId}(articleChapterId=${indexedChapter.articleChapter().id})}" method="post">
+                        <form th:if="${isPrincipalAnAuthor}" th:action="@{/article-chapters/delete/{articleChapterId}(articleChapterId=${indexedChapter.articleChapter().id})}" method="post">
                             <input type="hidden" name="articleId" th:value="${article.id}">
                             <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                         </form>

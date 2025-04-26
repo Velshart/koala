@@ -24,11 +24,11 @@
         </form>
     </div>
 
-    <h3>Your articles</h3>
+    <h3>Explore</h3>
 
     <div class="row row-cols-1 g-3">
 
-        <div class="col" th:each="article : ${userArticles}">
+        <div class="col" th:each="article : ${articles}">
 
             <div class="card shadow-sm">
 
@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        <div th:if="${#lists.isEmpty(userArticles)}">
+        <div th:if="${#lists.isEmpty(articles)}">
             <p>You have no articles yet.</p>
         </div>
 

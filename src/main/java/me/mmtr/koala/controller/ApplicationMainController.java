@@ -10,9 +10,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Controller
 public class ApplicationMainController {
@@ -25,24 +26,32 @@ public class ApplicationMainController {
     }
 
     @GetMapping("/")
-    public String home(HttpSession session, OAuth2AuthenticationToken authenticationToken, Model model) {
+    public String home(@RequestParam(required = false) String keyword, HttpSession session,
+                       OAuth2AuthenticationToken authenticationToken, Model model) {
+        if (authenticationToken == null) {
+            return "redirect:/login";
+        }
         OAuth2User principal = authenticationToken.getPrincipal();
 
         String email = principal.getAttribute("email");
         User user = userRepository.findByEmail(email).orElse(null);
-        List<Article> userArticles;
+
+        String username = "";
         if (user != null) {
-             userArticles = articleDAO.findAll()
-                    .stream()
-                    .filter(article -> article.getAuthor().equals(user.getName()))
+            username = user.getName();
+        }
+        List<Article> articles;
+        if (keyword != null) {
+            articles = getAllArticlesExceptPrincipal(username)
+                    .filter(article -> article.getTitle().contains(keyword))
                     .toList();
-        }else {
-            userArticles = new ArrayList<>();
+        } else {
+            articles = getAllArticlesExceptPrincipal(username).toList();
         }
 
         session.setAttribute("principalUser", user);
         session.setAttribute("authTokenPrincipal", authenticationToken.getPrincipal());
-        model.addAttribute("userArticles", userArticles);
+        model.addAttribute("articles", articles);
         model.addAttribute("user", user);
         return "index";
     }
@@ -56,5 +65,11 @@ public class ApplicationMainController {
         model.addAttribute("authTokenPrincipalPicture", principal.getAttribute("picture"));
 
         return "profile";
+    }
+
+    private Stream<Article> getAllArticlesExceptPrincipal(String username) {
+        return articleDAO.findAll()
+                .stream()
+                .filter(article -> !article.getAuthor().equals(username));
     }
 }

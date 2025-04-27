@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Entity
 @AllArgsConstructor
@@ -19,7 +18,11 @@ public class ArticleChapter {
 
     private String title;
 
-    private String content;
+    @Lob
+    private String delta;
+
+    @Lob
+    private String htmlContent;
 
     private String createdAt;
 

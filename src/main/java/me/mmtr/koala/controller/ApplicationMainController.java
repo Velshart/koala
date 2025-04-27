@@ -41,8 +41,8 @@ public class ApplicationMainController {
         if (user != null) {
             username = user.getName();
         }
+
         List<Article> articles;
-        System.out.println("keyword: " + keyword);
         if (keyword != null) {
             articles = getAllArticlesExceptPrincipal(username)
                     .filter(article -> article.getTitle().contains(keyword))

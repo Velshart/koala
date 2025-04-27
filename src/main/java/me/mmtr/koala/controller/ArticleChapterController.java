@@ -36,12 +36,14 @@ public class ArticleChapterController {
 
     @PostMapping("/new/{articleId}")
     public String saveArticleChapter(@PathVariable Long articleId,
+                                     @RequestParam String delta,
+                                     @RequestParam String htmlContent,
                                      @ModelAttribute("articleChapter") ArticleChapter articleChapter) {
         Article article = articleDAO.findById(articleId);
 
         articleChapter.setCreatedAt(FormatUtil.formatDateTime(LocalDateTime.now()));
-        article.addChapter(articleChapter);
-
+        articleChapter.setDelta(delta);
+        articleChapter.setHtmlContent(htmlContent);
         article.addChapter(articleChapter);
 
         articleDAO.update(article);
@@ -62,7 +64,9 @@ public class ArticleChapterController {
     }
 
     @PostMapping("/update/{articleId}/{articleChapterId}")
-    public String updateArticleChapter(@PathVariable Long articleId,
+    public String updateArticleChapter(@RequestParam(name = "delta") String delta,
+                                       @RequestParam(name = "html") String html,
+                                       @PathVariable Long articleId,
                                        @PathVariable Long articleChapterId,
                                        @RequestParam String createdAt,
                                        @RequestParam int articleIndex,
@@ -72,6 +76,8 @@ public class ArticleChapterController {
         articleChapter.setId(articleChapterId);
         articleChapter.setArticle(articleDAO.findById(articleId));
         articleChapter.setCreatedAt(createdAt);
+        articleChapter.setDelta(delta);
+        articleChapter.setHtmlContent(html);
         articleChapterDAO.update(articleChapter);
 
         return String.format("redirect:/article-chapters/view/%s/%s", articleId, articleIndex);

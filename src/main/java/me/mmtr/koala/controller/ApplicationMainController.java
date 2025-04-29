@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -55,6 +56,7 @@ public class ApplicationMainController {
         session.setAttribute("authTokenPrincipal", authenticationToken.getPrincipal());
         model.addAttribute("articles", articles);
         model.addAttribute("user", user);
+        model.addAttribute("username", username);
         model.addAttribute("requestURI", request.getRequestURI());
         return "index";
     }
@@ -67,6 +69,19 @@ public class ApplicationMainController {
         model.addAttribute("authTokenPrincipalEmail", principal.getAttribute("email"));
         model.addAttribute("authTokenPrincipalPicture", principal.getAttribute("picture"));
 
+        return "profile";
+    }
+
+    @GetMapping("/profile/{username}")
+    public String profile(@PathVariable String username, Model model) {
+        User user = userRepository.findByName(username).orElseThrow();
+
+        model.addAttribute("username", user.getName());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("picture", user.getPicture());
+
+        System.out.println(user.getPicture());
+        System.out.println(user.getName());
         return "profile";
     }
 

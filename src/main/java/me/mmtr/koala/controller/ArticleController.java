@@ -88,11 +88,13 @@ public class ArticleController {
     }
 
     @GetMapping("/view/{articleId}")
-    public String viewArticle(HttpSession session, @PathVariable Long articleId, Model model) {
+    public String viewArticle(HttpSession session, @RequestParam String requestURI,
+                              @PathVariable Long articleId, Model model) {
         Article article = articleDAO.findById(articleId);
         User user = (User) session.getAttribute("principalUser");
 
         model.addAttribute("article", article);
+        model.addAttribute("requestURI", requestURI);
         model.addAttribute("isPrincipalAnAuthor", user.getName().equals(article.getAuthor()));
         model.addAttribute("articleChapters",
                 article.mapArticleChapterListToIndexedArticleChapterList());

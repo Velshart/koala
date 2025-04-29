@@ -19,5 +19,6 @@ public class User {
 
     private String name;
     private String email;
+    private String picture;
     private LocalDateTime createdAt;
 }

@@ -18,10 +18,14 @@
     <h6 th:text="'by ' + ${article.author}"></h6>
 
     <div class="btn-group gap-2" role="group">
-        <form th:action="@{/}" method="get">
-            <button type="submit" class="btn btn-primary">Exit</button>
+        <form th:if="${requestURI == '/' || requestURI == '/articles/user-articles'}" th:action="@{${requestURI == '/' ? '/' : '/articles/user-articles'}}" method="get">
+            <button type="submit" class="btn btn-outline-primary">Exit</button>
         </form>
         <br>
+
+        <form th:action="@{/profile/{username}(username=${article.author})}" method="get">
+            <button type="submit" class="btn btn-primary">Author's profile</button>
+        </form><br>
 
         <div th:if="${isPrincipalAnAuthor}" class="btn-group gap-2" role="group">
 

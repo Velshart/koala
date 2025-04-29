@@ -16,11 +16,11 @@
 <div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
     <div class="card border-0 shadow-sm" style="width: 300px;">
         <div class="card-body text-center p-4">
-            <img th:src="${authTokenPrincipalPicture}" alt="User photo"
+            <img th:src="${picture}" alt="User photo"
                  class="rounded-circle mb-3"
                  style="width: 100px; height: 100px; object-fit: cover;">
-            <h2 class="card-title mb-2 text-dark" th:text="${authTokenPrincipalName}"></h2>
-            <p class="card-text text-muted mb-4" th:text="${authTokenPrincipalEmail}"></p>
+            <h2 class="card-title mb-2 text-dark" th:text="${username}"></h2>
+            <p class="card-text text-muted mb-4" th:text="${email}"></p>
             <form th:action="@{/}" method="get">
                 <button type="submit" class="btn btn-primary">Return to home page</button>
             </form>

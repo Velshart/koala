@@ -27,7 +27,11 @@
                 </li>
 
                 <li class="profileNavbarItem">
-                    <a class="nav-link active" aria-current="page" th:href="@{/profile}">Profile</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/profile/{username}(username=${username})}">Profile</a>
+                </li>
+
+                <li class="profileNavbarItem">
+                    <a class="nav-link active" aria-current="page" th:href="@{/}">People</a>
                 </li>
 
                 <li class="profileNavbarItem">

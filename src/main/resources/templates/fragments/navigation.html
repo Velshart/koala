@@ -34,9 +34,18 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/articles/user-articles}">Your articles</a>
                 </li>
             </ul>
+
+            <form action="/articles/new" method="get" class="me-2">
+                <button type="submit" class="btn btn-success">Create new article</button>
+            </form>
+
             <form th:if="${requestURI == '/' || requestURI == '/articles/user-articles'}" th:action="@{${requestURI == '/' ? '/' : '/articles/user-articles'}}" class="d-flex" role="search" method="get">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
                 <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+
+            <form action="/logout" method="get" class="ms-2">
+                <button type="submit" class="btn btn-danger">Log out</button>
             </form>
 
         </div>

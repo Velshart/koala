@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -73,16 +74,45 @@ public class ApplicationMainController {
     }
 
     @GetMapping("/profile/{username}")
-    public String profile(@PathVariable String username, Model model) {
-        User user = userRepository.findByName(username).orElseThrow();
+    public String profile(HttpSession session, @PathVariable String username, Model model) {
 
-        model.addAttribute("username", user.getName());
-        model.addAttribute("email", user.getEmail());
-        model.addAttribute("picture", user.getPicture());
+        User viewedUser = userRepository.findByName(username).orElseThrow();
+        User principalUser = (User) session.getAttribute("principalUser");
+        System.out.println(viewedUser.getFollowers());
 
-        System.out.println(user.getPicture());
-        System.out.println(user.getName());
+        model.addAttribute("username", viewedUser.getName());
+        model.addAttribute("email", viewedUser.getEmail());
+        model.addAttribute("picture", viewedUser.getPicture());
+        model.addAttribute("followers", viewedUser.getFollowers());
+        model.addAttribute(
+                "isSelfProfileView",
+                viewedUser.getName().equals(principalUser.getName())
+        );
+        model.addAttribute(
+                "isFollowedByPrincipal",
+                viewedUser.isFollowedByUser(principalUser)
+        );
+
         return "profile";
+    }
+
+    @PostMapping("/follow")
+    public String follow(HttpSession session, @RequestParam String username) {
+
+        User followedUser = userRepository.findByName(username).orElseThrow();
+        followedUser.addFollower((User) session.getAttribute("principalUser"));
+
+        userRepository.save(followedUser);
+        return "redirect:/profile/" + username;
+    }
+
+    @PostMapping("/unfollow")
+    public String unfollow(HttpSession session, @RequestParam String username) {
+        User unfollowedUser = userRepository.findByName(username).orElseThrow();
+        unfollowedUser.removeFollower((User) session.getAttribute("principalUser"));
+
+        userRepository.save(unfollowedUser);
+        return "redirect:/profile/" + username;
     }
 
     private Stream<Article> getAllArticlesExceptPrincipal(String username) {

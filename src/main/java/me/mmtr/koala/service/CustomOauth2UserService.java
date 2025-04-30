@@ -2,6 +2,7 @@ package me.mmtr.koala.service;
 
 import me.mmtr.koala.model.User;
 import me.mmtr.koala.repository.UserRepository;
+import me.mmtr.koala.util.StringConverter;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -34,7 +35,7 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
             User newUser = new User();
-            newUser.setName(name);
+            newUser.setName(StringConverter.replaceSpecialChars(name));
             newUser.setEmail(email);
             newUser.setPicture(picture);
             newUser.setCreatedAt(LocalDateTime.now());

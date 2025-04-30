@@ -27,15 +27,15 @@ public class ArticleController {
         User user = (User) session.getAttribute("principalUser");
 
         List<Article> articles = articleDAO.findAll()
-                        .stream()
-                        .filter(article -> {
-                            if (keyword != null) {
-                                return article.getAuthor().equalsIgnoreCase(user.getName()) &&
-                                        article.getTitle().contains(keyword);
-                            }
-                            return article.getAuthor().equalsIgnoreCase(user.getName());
-                        })
-                        .toList();
+                .stream()
+                .filter(article -> {
+                    if (keyword != null) {
+                        return article.getAuthor().equalsIgnoreCase(user.getName()) &&
+                                article.getTitle().contains(keyword);
+                    }
+                    return article.getAuthor().equalsIgnoreCase(user.getName());
+                })
+                .toList();
 
         model.addAttribute("articles", articles);
         model.addAttribute("requestURI", request.getRequestURI());
@@ -88,7 +88,7 @@ public class ArticleController {
     }
 
     @GetMapping("/view/{articleId}")
-    public String viewArticle(HttpSession session, @RequestParam String requestURI,
+    public String viewArticle(HttpSession session, @RequestParam(required = false) String requestURI,
                               @PathVariable Long articleId, Model model) {
         Article article = articleDAO.findById(articleId);
         User user = (User) session.getAttribute("principalUser");

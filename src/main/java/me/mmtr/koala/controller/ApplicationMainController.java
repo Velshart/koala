@@ -78,7 +78,6 @@ public class ApplicationMainController {
 
         User viewedUser = userRepository.findByName(username).orElseThrow();
         User principalUser = (User) session.getAttribute("principalUser");
-        System.out.println(viewedUser.getFollowers());
 
         model.addAttribute("username", viewedUser.getName());
         model.addAttribute("email", viewedUser.getEmail());
@@ -94,6 +93,30 @@ public class ApplicationMainController {
         );
 
         return "profile";
+    }
+
+    @GetMapping("/all-people")
+    public String allPeople(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("principalUser");
+        List<User> allPeople = userRepository
+                .findAll()
+                .stream()
+                .filter(person -> !person.equals(user))
+                .toList();
+
+        model.addAttribute("people", allPeople);
+        model.addAttribute("username", user.getName());
+        return "people";
+    }
+
+    @GetMapping("/followers")
+    public String followers(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("principalUser");
+        List<User> followers = user.getFollowers();
+
+        model.addAttribute("people", followers);
+        model.addAttribute("username", user.getName());
+        return "people";
     }
 
     @PostMapping("/follow")

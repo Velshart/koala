@@ -31,10 +31,6 @@
                 <input type="hidden" name="username" th:value="${username}">
                 <button type="submit" class="btn btn-primary" th:text="${isFollowedByPrincipal ? 'Unfollow' : 'Follow'}"></button>
             </form><br>
-
-            <form th:action="@{/}" method="get">
-                <button type="submit" class="btn btn-primary">Return to home page</button>
-            </form>
         </div>
     </div>
 </div>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping(path = "/articles")
@@ -37,6 +38,7 @@ public class ArticleController {
                 })
                 .toList();
 
+        model.addAttribute("username", user.getName());
         model.addAttribute("articles", articles);
         model.addAttribute("requestURI", request.getRequestURI());
         return "user-articles";
@@ -44,6 +46,9 @@ public class ArticleController {
 
     @GetMapping("/new")
     public String newArticle(Model model) {
+        User user = (User) model.getAttribute("principalUser");
+
+        model.addAttribute("username", Objects.requireNonNull(user).getName());
         model.addAttribute("article", new Article());
         return "new-article";
     }
@@ -60,7 +65,10 @@ public class ArticleController {
 
     @GetMapping("/update/{articleId}")
     public String updateArticle(@PathVariable Long articleId, Model model) {
+        User user = (User) model.getAttribute("principalUser");
+
         Article article = articleDAO.findById(articleId);
+        model.addAttribute("username", Objects.requireNonNull(user).getName());
         model.addAttribute("article", article);
         return "update-article-title";
     }
@@ -93,6 +101,7 @@ public class ArticleController {
         Article article = articleDAO.findById(articleId);
         User user = (User) session.getAttribute("principalUser");
 
+        model.addAttribute("username", user.getName());
         model.addAttribute("article", article);
         model.addAttribute("requestURI", requestURI);
         model.addAttribute("isPrincipalAnAuthor", user.getName().equals(article.getAuthor()));

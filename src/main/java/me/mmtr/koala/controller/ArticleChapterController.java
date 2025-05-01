@@ -27,7 +27,10 @@ public class ArticleChapterController {
     }
 
     @GetMapping("/new/{articleId}")
-    public String newArticleChapter(@PathVariable Long articleId, Model model) {
+    public String newArticleChapter(HttpSession session, @PathVariable Long articleId, Model model) {
+        User user = (User) session.getAttribute("principalUser");
+
+        model.addAttribute("username", user.getName());
         model.addAttribute("articleChapter", new ArticleChapter());
         model.addAttribute("articleId", articleId);
 
@@ -52,11 +55,14 @@ public class ArticleChapterController {
     }
 
     @GetMapping("/update/{articleId}/{articleChapterId}")
-    public String updateArticleChapter(@PathVariable Long articleId,
+    public String updateArticleChapter(HttpSession session,
+                                       @PathVariable Long articleId,
                                        @PathVariable Long articleChapterId,
                                        Model model) {
+        User user = (User) session.getAttribute("principalUser");
         ArticleChapter articleChapter = articleChapterDAO.findById(articleChapterId);
 
+        model.addAttribute("username", user.getName());
         model.addAttribute("articleChapter", articleChapter);
         model.addAttribute("articleId", articleId);
 
@@ -93,7 +99,7 @@ public class ArticleChapterController {
     public String articleChapterView(HttpSession session,
                                      @PathVariable Long articleId,
                                      @PathVariable int index, Model model) {
-        User principalUser = (User) session.getAttribute("principalUser");
+        User user = (User) session.getAttribute("principalUser");
         List<ArticleChapter> articleChapters = articleDAO.findById(articleId).getChapters();
 
         if (index < 0) index = 0;
@@ -101,8 +107,9 @@ public class ArticleChapterController {
 
         ArticleChapter articleChapter = articleChapters.get(index);
 
+        model.addAttribute("username", user.getName());
         model.addAttribute("isPrincipalAnAuthor",
-                articleChapter.getArticle().getAuthor().equals(principalUser.getName()));
+                articleChapter.getArticle().getAuthor().equals(user.getName()));
         model.addAttribute("articleId", articleId);
         model.addAttribute("articleChapter", articleChapter);
         model.addAttribute("currentIndex", index);

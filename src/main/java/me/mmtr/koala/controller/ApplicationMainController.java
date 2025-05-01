@@ -59,6 +59,7 @@ public class ApplicationMainController {
         model.addAttribute("user", user);
         model.addAttribute("username", username);
         model.addAttribute("requestURI", request.getRequestURI());
+        model.addAttribute("searchRedirectionURI", request.getRequestURI());
         return "index";
     }
 
@@ -96,24 +97,44 @@ public class ApplicationMainController {
     }
 
     @GetMapping("/all-people")
-    public String allPeople(HttpSession session, Model model) {
+    public String allPeople(@RequestParam(required = false) String keyword,
+                            HttpServletRequest request,
+                            HttpSession session, Model model) {
         User user = (User) session.getAttribute("principalUser");
-        List<User> allPeople = userRepository
-                .findAll()
-                .stream()
-                .filter(person -> !person.equals(user))
-                .toList();
 
+        List<User> allPeople;
+        if (keyword != null) {
+            allPeople = getAllPeopleExceptPrincipal(user.getName())
+                    .filter(u -> u.getName().contains(keyword) || u.getEmail().contains(keyword))
+                    .toList();
+        } else {
+            allPeople = getAllPeopleExceptPrincipal(user.getName()).toList();
+        }
+
+        model.addAttribute("requestURI", request.getRequestURI());
+        model.addAttribute("searchRedirectionURI", request.getRequestURI());
         model.addAttribute("people", allPeople);
         model.addAttribute("username", user.getName());
         return "people";
     }
 
     @GetMapping("/followers")
-    public String followers(HttpSession session, Model model) {
+    public String followers(@RequestParam(required = false) String keyword,
+                            HttpServletRequest request,
+                            HttpSession session, Model model) {
         User user = (User) session.getAttribute("principalUser");
-        List<User> followers = user.getFollowers();
 
+        List<User> followers;
+        if (keyword != null) {
+            followers = user.getFollowers().stream()
+                    .filter(u -> u.getName().contains(keyword) || u.getEmail().contains(keyword))
+                    .toList();
+        } else {
+            followers = user.getFollowers();
+        }
+
+        model.addAttribute("requestURI", request.getRequestURI());
+        model.addAttribute("searchRedirectionURI", request.getRequestURI());
         model.addAttribute("people", followers);
         model.addAttribute("username", user.getName());
         return "people";
@@ -142,5 +163,11 @@ public class ApplicationMainController {
         return articleDAO.findAll()
                 .stream()
                 .filter(article -> !article.getAuthor().equals(username));
+    }
+
+    private Stream<User> getAllPeopleExceptPrincipal(String username) {
+        return userRepository.findAll()
+                .stream()
+                .filter(user -> !user.getName().equals(username));
     }
 }

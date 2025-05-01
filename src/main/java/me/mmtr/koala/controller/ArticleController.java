@@ -41,12 +41,13 @@ public class ArticleController {
         model.addAttribute("username", user.getName());
         model.addAttribute("articles", articles);
         model.addAttribute("requestURI", request.getRequestURI());
+        model.addAttribute("searchRedirectionURI", request.getRequestURI());
         return "user-articles";
     }
 
     @GetMapping("/new")
-    public String newArticle(Model model) {
-        User user = (User) model.getAttribute("principalUser");
+    public String newArticle(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("principalUser");
 
         model.addAttribute("username", Objects.requireNonNull(user).getName());
         model.addAttribute("article", new Article());
@@ -64,8 +65,8 @@ public class ArticleController {
     }
 
     @GetMapping("/update/{articleId}")
-    public String updateArticle(@PathVariable Long articleId, Model model) {
-        User user = (User) model.getAttribute("principalUser");
+    public String updateArticle(HttpSession session, @PathVariable Long articleId, Model model) {
+        User user = (User) session.getAttribute("principalUser");
 
         Article article = articleDAO.findById(articleId);
         model.addAttribute("username", Objects.requireNonNull(user).getName());

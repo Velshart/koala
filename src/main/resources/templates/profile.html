@@ -21,7 +21,11 @@
                  style="width: 100px; height: 100px; object-fit: cover;">
             <h2 class="card-title mb-2 text-dark" th:text="${username}"></h2>
             <p class="card-text text-muted mb-4" th:text="${email}"></p>
-            <p class="card-text text-muted mb-4" th:text="${#lists.size(followers)} + ' followers'"></p>
+
+            <div class="d-flex gap-1 justify-content-center align-items-center">
+                <p class="card-text text-muted m-0" th:text="${#lists.size(followers)}"></p>
+                <a th:href="@{/followers}">followers</a>
+            </div>
 
             <form th:if="${not isSelfProfileView}" th:action="@{${isFollowedByPrincipal ? '/unfollow' : '/follow'}}" method="post">
                 <input type="hidden" name="username" th:value="${username}">

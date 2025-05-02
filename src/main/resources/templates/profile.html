@@ -24,13 +24,15 @@
 
             <div class="d-flex gap-1 justify-content-center align-items-center">
                 <p class="card-text text-muted m-0" th:text="${#lists.size(followers)}"></p>
-                <a th:href="@{/followers}">followers</a>
+                <a th:href="@{/followers/{username}(username=${username})}">followers</a>
             </div>
 
             <form th:if="${not isSelfProfileView}" th:action="@{${isFollowedByPrincipal ? '/unfollow' : '/follow'}}" method="post">
                 <input type="hidden" name="username" th:value="${username}">
                 <button type="submit" class="btn btn-primary" th:text="${isFollowedByPrincipal ? 'Unfollow' : 'Follow'}"></button>
             </form><br>
+
+            <a th:href="@{'/articles/user-articles/{username}'(username=${username})}" class="btn btn-sm btn-outline-primary">View articles</a>
         </div>
     </div>
 </div>

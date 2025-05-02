@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import me.mmtr.koala.model.Article;
 import me.mmtr.koala.model.User;
+import me.mmtr.koala.repository.UserRepository;
 import me.mmtr.koala.repository.dao.ArticleDAO;
 import me.mmtr.koala.util.FormatUtil;
 import org.springframework.stereotype.Controller;
@@ -18,14 +19,40 @@ import java.util.Objects;
 @RequestMapping(path = "/articles")
 public class ArticleController {
     private final ArticleDAO articleDAO;
+    private final UserRepository userRepository;
 
-    public ArticleController(ArticleDAO articleDAO) {
+    public ArticleController(ArticleDAO articleDAO, UserRepository userRepository) {
         this.articleDAO = articleDAO;
+        this.userRepository = userRepository;
     }
 
-    @GetMapping("/user-articles")
-    public String articles(HttpServletRequest request, @RequestParam(required = false) String keyword, HttpSession session, Model model) {
-        User user = (User) session.getAttribute("principalUser");
+//    @GetMapping("/user-articles")
+//    public String articles(HttpServletRequest request, @RequestParam(required = false) String keyword, HttpSession session, Model model) {
+//        User user = (User) session.getAttribute("principalUser");
+//
+//        List<Article> articles = articleDAO.findAll()
+//                .stream()
+//                .filter(article -> {
+//                    if (keyword != null) {
+//                        return article.getAuthor().equalsIgnoreCase(user.getName()) &&
+//                                article.getTitle().contains(keyword);
+//                    }
+//                    return article.getAuthor().equalsIgnoreCase(user.getName());
+//                })
+//                .toList();
+//
+//        model.addAttribute("username", user.getName());
+//        model.addAttribute("articles", articles);
+//        model.addAttribute("requestURI", request.getRequestURI());
+//        model.addAttribute("searchRedirectionURI", request.getRequestURI());
+//        return "user-articles";
+//    }
+
+    @GetMapping("/user-articles/{username}")
+    public String articles(@PathVariable String username, HttpServletRequest request,
+                           @RequestParam(required = false) String keyword,
+                           Model model) {
+        User user = userRepository.findByName(username).orElseThrow();
 
         List<Article> articles = articleDAO.findAll()
                 .stream()

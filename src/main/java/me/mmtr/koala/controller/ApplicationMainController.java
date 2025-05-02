@@ -46,11 +46,11 @@ public class ApplicationMainController {
 
         List<Article> articles;
         if (keyword != null) {
-            articles = getAllArticlesExceptPrincipal(username)
+            articles = getAllArticlesExceptPrincipal(user)
                     .filter(article -> article.getTitle().contains(keyword))
                     .toList();
         } else {
-            articles = getAllArticlesExceptPrincipal(username).toList();
+            articles = getAllArticlesExceptPrincipal(user).toList();
         }
 
         session.setAttribute("principalUser", user);
@@ -104,11 +104,11 @@ public class ApplicationMainController {
 
         List<User> allPeople;
         if (keyword != null) {
-            allPeople = getAllPeopleExceptPrincipal(user.getName())
+            allPeople = getAllPeopleExcept(user)
                     .filter(u -> u.getName().contains(keyword) || u.getEmail().contains(keyword))
                     .toList();
         } else {
-            allPeople = getAllPeopleExceptPrincipal(user.getName()).toList();
+            allPeople = getAllPeopleExcept(user).toList();
         }
 
         model.addAttribute("requestURI", request.getRequestURI());
@@ -118,11 +118,10 @@ public class ApplicationMainController {
         return "people";
     }
 
-    @GetMapping("/followers")
-    public String followers(@RequestParam(required = false) String keyword,
-                            HttpServletRequest request,
-                            HttpSession session, Model model) {
-        User user = (User) session.getAttribute("principalUser");
+    @GetMapping("/followers/{username}")
+    public String followers(@PathVariable String username, @RequestParam(required = false) String keyword,
+                            HttpServletRequest request, Model model) {
+        User user = userRepository.findByName(username).orElseThrow();
 
         List<User> followers;
         if (keyword != null) {
@@ -136,6 +135,29 @@ public class ApplicationMainController {
         model.addAttribute("requestURI", request.getRequestURI());
         model.addAttribute("searchRedirectionURI", request.getRequestURI());
         model.addAttribute("people", followers);
+        model.addAttribute("username", user.getName());
+        return "people";
+    }
+
+    @GetMapping("/followed")
+    public String followed(@RequestParam(required = false) String keyword,
+                           HttpServletRequest request,
+                           HttpSession session, Model model) {
+        User user = (User) session.getAttribute("principalUser");
+
+        List<User> followed;
+        if (keyword != null) {
+            followed = getPeopleFollowedBy(user)
+                    .filter(u ->
+                            u.getName().contains(keyword) || u.getEmail().contains(keyword))
+                    .toList();
+        } else {
+            followed = getPeopleFollowedBy(user).toList();
+        }
+
+        model.addAttribute("requestURI", request.getRequestURI());
+        model.addAttribute("searchRedirectionURI", request.getRequestURI());
+        model.addAttribute("people", followed);
         model.addAttribute("username", user.getName());
         return "people";
     }
@@ -159,15 +181,20 @@ public class ApplicationMainController {
         return "redirect:/profile/" + username;
     }
 
-    private Stream<Article> getAllArticlesExceptPrincipal(String username) {
+    private Stream<Article> getAllArticlesExceptPrincipal(User user) {
         return articleDAO.findAll()
                 .stream()
-                .filter(article -> !article.getAuthor().equals(username));
+                .filter(article -> !article.getAuthor().equals(user.getName()));
     }
 
-    private Stream<User> getAllPeopleExceptPrincipal(String username) {
+    private Stream<User> getAllPeopleExcept(User user) {
         return userRepository.findAll()
                 .stream()
-                .filter(user -> !user.getName().equals(username));
+                .filter(u -> !u.getName().equals(user.getName()));
+    }
+
+    private Stream<User> getPeopleFollowedBy(User user) {
+        return getAllPeopleExcept(user)
+                .filter(u -> u.getFollowers().contains(user));
     }
 }

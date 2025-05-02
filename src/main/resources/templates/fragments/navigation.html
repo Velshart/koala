@@ -35,11 +35,11 @@
                 </li>
 
                 <li class="profileNavbarItem">
-                    <a class="nav-link active" aria-current="page" th:href="@{/followers}">Followed</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/followed}">Followed</a>
                 </li>
 
                 <li class="profileNavbarItem">
-                    <a class="nav-link active" aria-current="page" th:href="@{/articles/user-articles}">Your articles</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/articles/user-articles/{username}(username=${username})}">Your articles</a>
                 </li>
             </ul>
 

@@ -27,7 +27,7 @@
                 </li>
 
                 <li class="profileNavbarItem">
-                    <a class="nav-link active" aria-current="page" th:href="@{/profile/{username}(username=${username})}">Profile</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/your-profile}">Profile</a>
                 </li>
 
                 <li class="profileNavbarItem">
@@ -47,7 +47,7 @@
                 <button type="submit" class="btn btn-success">Create new article</button>
             </form>
 
-            <form th:if="${requestURI == '/' || requestURI == '/articles/user-articles' || requestURI == '/all-people' || requestURI == '/followers'}" th:action="@{${searchRedirectionURI}}" class="d-flex" role="search" method="get">
+            <form th:if="${requestURI == '/' || #strings.startsWith(requestURI, '/articles/user-articles') || requestURI == '/all-people' || #strings.startsWith(requestURI, '/followers') || requestURI == '/followed'}" th:action="@{${searchRedirectionURI}}" class="d-flex" role="search" method="get">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>

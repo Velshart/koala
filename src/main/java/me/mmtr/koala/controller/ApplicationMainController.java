@@ -63,19 +63,21 @@ public class ApplicationMainController {
         return "index";
     }
 
-    @GetMapping("/profile")
-    public String profile(HttpSession session, Model model) {
-        OAuth2User principal = (OAuth2User) session.getAttribute("authTokenPrincipal");
+    @GetMapping("/your-profile")
+    public String profile(HttpServletRequest request, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("principalUser");
 
-        model.addAttribute("authTokenPrincipalName", principal.getAttribute("name"));
-        model.addAttribute("authTokenPrincipalEmail", principal.getAttribute("email"));
-        model.addAttribute("authTokenPrincipalPicture", principal.getAttribute("picture"));
+        model.addAttribute("username", user.getName());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("picture", user.getPicture());
+        model.addAttribute("followers", user.getFollowers());
+        model.addAttribute("requestURI", request.getRequestURI());
 
         return "profile";
     }
 
     @GetMapping("/profile/{username}")
-    public String profile(HttpSession session, @PathVariable String username, Model model) {
+    public String profile(HttpServletRequest request, HttpSession session, @PathVariable String username, Model model) {
 
         User viewedUser = userRepository.findByName(username).orElseThrow();
         User principalUser = (User) session.getAttribute("principalUser");
@@ -92,6 +94,7 @@ public class ApplicationMainController {
                 "isFollowedByPrincipal",
                 viewedUser.isFollowedByUser(principalUser)
         );
+        model.addAttribute("requestURI", request.getRequestURI());
 
         return "profile";
     }

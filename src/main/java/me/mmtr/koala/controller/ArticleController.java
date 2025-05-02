@@ -26,28 +26,6 @@ public class ArticleController {
         this.userRepository = userRepository;
     }
 
-//    @GetMapping("/user-articles")
-//    public String articles(HttpServletRequest request, @RequestParam(required = false) String keyword, HttpSession session, Model model) {
-//        User user = (User) session.getAttribute("principalUser");
-//
-//        List<Article> articles = articleDAO.findAll()
-//                .stream()
-//                .filter(article -> {
-//                    if (keyword != null) {
-//                        return article.getAuthor().equalsIgnoreCase(user.getName()) &&
-//                                article.getTitle().contains(keyword);
-//                    }
-//                    return article.getAuthor().equalsIgnoreCase(user.getName());
-//                })
-//                .toList();
-//
-//        model.addAttribute("username", user.getName());
-//        model.addAttribute("articles", articles);
-//        model.addAttribute("requestURI", request.getRequestURI());
-//        model.addAttribute("searchRedirectionURI", request.getRequestURI());
-//        return "user-articles";
-//    }
-
     @GetMapping("/user-articles/{username}")
     public String articles(@PathVariable String username, HttpServletRequest request,
                            @RequestParam(required = false) String keyword,

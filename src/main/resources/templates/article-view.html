@@ -18,14 +18,16 @@
     <h6 th:text="'by ' + ${article.author}"></h6>
 
     <div class="btn-group gap-2" role="group">
-        <form th:if="${requestURI == '/' || requestURI == '/articles/user-articles'}" th:action="@{${requestURI == '/' ? '/' : '/articles/user-articles'}}" method="get">
+        <form th:if="${requestURI == '/' || requestURI == '/articles/user-articles'}"
+              th:action="@{${requestURI == '/' ? '/' : '/articles/user-articles'}}" method="get">
             <button type="submit" class="btn btn-outline-primary">Exit</button>
         </form>
         <br>
 
         <form th:action="@{/profile/{username}(username=${article.author})}" method="get">
             <button type="submit" class="btn btn-primary">Author's profile</button>
-        </form><br>
+        </form>
+        <br>
 
         <div th:if="${isPrincipalAnAuthor}" class="btn-group gap-2" role="group">
 
@@ -53,14 +55,19 @@
 
                 <div class="card-body">
                     <h5 class="card-title" th:text="${indexedChapter.articleChapter().title}"></h5>
-                    <p class="card-text"><small class="text-muted" th:text="'Created at: ' + ${indexedChapter.articleChapter().createdAt}"></small></p>
+                    <p class="card-text"><small class="text-muted"
+                                                th:text="'Created at: ' + ${indexedChapter.articleChapter().createdAt}"></small>
+                    </p>
 
                     <div class="d-flex gap-2">
-                        <form th:action="@{/article-chapters/view/{articleId}/{index}(articleId=${article.id}, index=${indexedChapter.index()})}" method="get">
+                        <form th:action="@{/article-chapters/view/{articleId}/{index}(articleId=${article.id}, index=${indexedChapter.index()})}"
+                              method="get">
                             <button type="submit" class="btn btn-outline-primary btn-sm">View</button>
                         </form>
 
-                        <form th:if="${isPrincipalAnAuthor}" th:action="@{/article-chapters/delete/{articleChapterId}(articleChapterId=${indexedChapter.articleChapter().id})}" method="post">
+                        <form th:if="${isPrincipalAnAuthor}"
+                              th:action="@{/article-chapters/delete/{articleChapterId}(articleChapterId=${indexedChapter.articleChapter().id})}"
+                              method="post">
                             <input type="hidden" name="articleId" th:value="${article.id}">
                             <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                         </form>

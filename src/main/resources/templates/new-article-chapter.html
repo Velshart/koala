@@ -19,7 +19,8 @@
 <div class="container mt-5">
     <h1 class="mb-4">New chapter</h1>
 
-    <form method="post" th:object="${articleChapter}" id="editorForm" th:action="@{/article-chapters/new/{articleId}(articleId=${articleId})}">
+    <form method="post" th:object="${articleChapter}" id="editorForm"
+          th:action="@{/article-chapters/new/{articleId}(articleId=${articleId})}">
 
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
@@ -34,13 +35,15 @@
             >
         </div>
 
-        <div class="form-group" id="editor"></div><br>
+        <div class="form-group" id="editor"></div>
+        <br>
 
         <input type="hidden" name="delta" id="deltaInput">
         <input type="hidden" name="htmlContent" id="htmlInput"/>
 
         <button type="submit" class="btn btn-primary">Add chapter</button>
-    </form><br>
+    </form>
+    <br>
 
     <form th:action="@{/articles/view/{articleId}(articleId=${articleId})}" method="get">
         <button type="submit" class="btn btn-warning">Cancel</button>
@@ -48,9 +51,9 @@
 </div>
 
 <script>
-    const quill = new Quill('#editor', { theme: 'snow' });
+    const quill = new Quill('#editor', {theme: 'snow'});
 
-    document.getElementById('editorForm').addEventListener('submit', function() {
+    document.getElementById('editorForm').addEventListener('submit', function () {
         const delta = quill.getContents();
         const html = quill.root.innerHTML;
 

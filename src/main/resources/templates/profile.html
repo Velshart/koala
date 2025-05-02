@@ -27,12 +27,16 @@
                 <a th:href="@{/followers/{username}(username=${username})}">followers</a>
             </div>
 
-            <form th:if="${isSelfProfileView != null and not isSelfProfileView}" th:action="@{${isFollowedByPrincipal ? '/unfollow' : '/follow'}}" method="post">
+            <form th:if="${isSelfProfileView != null and not isSelfProfileView}"
+                  th:action="@{${isFollowedByPrincipal ? '/unfollow' : '/follow'}}" method="post">
                 <input type="hidden" name="username" th:value="${username}">
-                <button type="submit" class="btn btn-primary" th:text="${isFollowedByPrincipal ? 'Unfollow' : 'Follow'}"></button>
-            </form><br>
+                <button type="submit" class="btn btn-primary"
+                        th:text="${isFollowedByPrincipal ? 'Unfollow' : 'Follow'}"></button>
+            </form>
+            <br>
 
-            <a th:href="@{'/articles/user-articles/{username}'(username=${username})}" class="btn btn-sm btn-outline-primary">View articles</a>
+            <a th:href="@{'/articles/user-articles/{username}'(username=${username})}"
+               class="btn btn-sm btn-outline-primary">View articles</a>
         </div>
     </div>
 </div>

@@ -27,7 +27,8 @@
                     <h5 class="card-title" th:text="${article.title}"></h5>
 
                     <p class="card-text"><small class="text-muted" th:text="'Author: ' + ${article.author}"></small></p>
-                    <p class="card-text"><small class="text-muted" th:text="'Created at: ' + ${article.createdAt}"></small></p>
+                    <p class="card-text"><small class="text-muted"
+                                                th:text="'Created at: ' + ${article.createdAt}"></small></p>
 
                     <form th:action="@{/articles/view/{id}(id=${article.id})}" method="get">
                         <input type="hidden" name="articleId" th:value="${article.id}">

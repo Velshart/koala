@@ -34,12 +34,14 @@
             >
         </div>
 
-        <div class="form-group" id="editor"></div><br>
+        <div class="form-group" id="editor"></div>
+        <br>
         <input type="hidden" name="delta" id="deltaInput">
         <input type="hidden" name="html" id="htmlInput">
 
         <button type="submit" class="btn btn-primary">Save</button>
-    </form><br>
+    </form>
+    <br>
 
     <form th:action="@{/articles/view/{articleId}(articleId=${articleId})}" method="get">
         <button type="submit" class="btn btn-warning">Cancel</button>
@@ -47,12 +49,12 @@
 </div>
 
 <script th:inline="javascript">
-    const quill = new Quill('#editor', { theme: 'snow' });
+    const quill = new Quill('#editor', {theme: 'snow'});
 
     const savedDelta = /*[[${articleChapter.delta}]]*/ '{}';
     quill.setContents(JSON.parse(savedDelta));
 
-    document.getElementById('editorForm').addEventListener('submit', function() {
+    document.getElementById('editorForm').addEventListener('submit', function () {
         const delta = quill.getContents();
         const html = quill.root.innerHTML;
 

@@ -16,6 +16,9 @@
 <div class="container">
     <h1 th:text="${article.title}"></h1>
     <h6 th:text="'by ' + ${article.author}"></h6>
+    <p class="card-text"><small class="text-muted"
+                                th:text="'Overall rating: ' + ${article.calculateOverallRating() + ' (' + article.getNumberOfRatings() + ')'}"></small>
+    </p>
 
     <div class="btn-group gap-2" role="group">
         <form th:if="${requestURI == '/' || requestURI == '/articles/user-articles'}"
@@ -29,6 +32,13 @@
         </form>
         <br>
 
+        <form method="post" th:if="${isArticleRatedByPrincipal}" th:action="@{/ratings/delete/{articleRatingId}(articleRatingId=${ratingFromPrincipal.id})}">
+            <input type="hidden" name="articleId" th:value="${article.id}">
+
+            <label class="fw-bold" th:text="'Your rating: ' + ${ratingFromPrincipal.rating}" for="deleteRatingButton"></label>
+            <button id="deleteRatingButton" type="submit" class="btn btn-outline-danger">Delete rating</button>
+        </form>
+
         <div th:if="${isPrincipalAnAuthor}" class="btn-group gap-2" role="group">
 
             <form th:action="@{/article-chapters/new/{articleId}(articleId=${article.id})}" method="get">
@@ -41,8 +51,42 @@
                 <button type="submit" class="btn btn-primary">Change title</button>
             </form>
             <br>
-
         </div>
+
+        <div class="form-check form-check-inline" th:if="${not isPrincipalAnAuthor && not isArticleRatedByPrincipal}">
+            <form th:action="@{/ratings/new}" method="post">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1"
+                    required>
+                    <label class="form-check-label" for="inlineRadio1">1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2"
+                    required>
+                    <label class="form-check-label" for="inlineRadio2">2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3"
+                    required>
+                    <label class="form-check-label" for="inlineRadio2">3</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4"
+                    required>
+                    <label class="form-check-label" for="inlineRadio2">4</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5"
+                    required>
+                    <label class="form-check-label" for="inlineRadio2">5</label>
+                </div>
+
+                <input type="hidden" name="ratedArticleId" th:value="${article.id}">
+
+                <button type="submit" class="btn btn-secondary">Rate article</button>
+            </form>
+        </div>
+
     </div>
 
     <h3>Chapters</h3>

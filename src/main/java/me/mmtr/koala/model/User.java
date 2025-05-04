@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,6 +32,9 @@ public class User {
             @JoinColumn(name = "FOLLOWER_ID", referencedColumnName = "ID")}
     )
     private List<User> followers;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArticleRating> articleRatings = new ArrayList<>();
 
     public void addFollower(User user) {
         followers.add(user);

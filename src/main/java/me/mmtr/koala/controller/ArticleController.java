@@ -109,8 +109,12 @@ public class ArticleController {
 
         model.addAttribute("username", user.getName());
         model.addAttribute("article", article);
-        model.addAttribute("requestURI", requestURI);
+        //model.addAttribute("requestURI", requestURI);
+
         model.addAttribute("isPrincipalAnAuthor", user.getName().equals(article.getAuthor()));
+        model.addAttribute("isArticleRatedByPrincipal", article.isArticleRatedByUser(user));
+        model.addAttribute("ratingFromPrincipal", article.getRatingFrom(user));
+
         model.addAttribute("articleChapters",
                 article.mapArticleChapterListToIndexedArticleChapterList());
         return "article-view";

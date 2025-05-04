@@ -47,9 +47,14 @@ public class ArticleRatingController {
         return "redirect:/articles/view/" + articleId;
     }
 
-    @GetMapping("/all")
-    public String allArticleRatings(Model model) {
-        model.addAttribute("articleRatings", articleRatingDAO.findAll());
+    @GetMapping("/article-all/{articleId}")
+    public String articleRatings(@PathVariable Long articleId, Model model) {
+
+        model.addAttribute("articleRatings", articleRatingDAO
+                .findAll()
+                .stream()
+                .filter(articleRating -> articleRating.getArticle().getId().equals(articleId))
+                .toList());
         return "article-ratings";
     }
 }

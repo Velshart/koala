@@ -26,7 +26,7 @@ public class ArticleRating {
     @JoinColumn(name = "article_id")
     private Article article;
 
-    @Min(1)
-    @Max(5)
+    @Min(value = 1, message = "The rating must be greater than or equal to 1 and less than or equal to 5.")
+    @Max(value = 5, message = "The rating must be greater than or equal to 1 and less than or equal to 5.")
     private int rating;
 }

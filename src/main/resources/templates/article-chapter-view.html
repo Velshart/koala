@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>View chapter | Koala</title>
@@ -34,6 +34,7 @@
                   th:action="@{/article-chapters/update/{articleId}/{articleChapterId}(articleId=${articleId}, articleChapterId=${articleChapter.id})}"
                   method="get">
                 <input type="hidden" name="createdAt" th:value="${articleChapter.createdAt}">
+                <input type="hidden" name="createdAtDateTime" th:value="${articleChapter.createdAtDateTime}">
                 <input type="hidden" name="articleIndex" th:value="${index}">
                 <button class="btn btn-primary">Edit</button>
             </form>

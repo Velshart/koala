@@ -52,7 +52,11 @@ public class User {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id);
+        return Objects.equals(id, user.id) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(picture, user.picture) &&
+                Objects.equals(createdAt, user.createdAt);
     }
 
     @Override

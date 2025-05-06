@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import me.mmtr.koala.model.record.IndexedArticleChapter;
 import org.hibernate.validator.constraints.Length;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"chapters", "ratings"})
 @Table(name = "articles")
 public class Article {
 
@@ -37,22 +39,23 @@ public class Article {
 
     public void addChapter(ArticleChapter chapter) {
         chapter.setArticle(this);
+
         chapters.add(chapter);
 
-        chapters.sort(Comparator.comparing(ArticleChapter::getCreatedAt).reversed());
+        chapters.sort(Comparator.comparing(ArticleChapter::getCreatedAtDateTime));
     }
 
     public boolean isArticleRatedByUser(User user) {
         return ratings.stream().anyMatch(rating -> rating.getUser().equals(user));
     }
 
-    public int calculateOverallRating() {
+    public double calculateOverallRating() {
         int ratingSum = 0;
         for (ArticleRating rating : ratings) {
             ratingSum += rating.getRating();
         }
 
-        return !ratings.isEmpty() ? ratingSum / ratings.size() : 0;
+        return !ratings.isEmpty() ? (double) ratingSum / ratings.size() : 0;
     }
 
     public int getNumberOfRatings() {

@@ -45,6 +45,7 @@ public class ArticleChapterController {
         Article article = articleDAO.findById(articleId);
 
         articleChapter.setCreatedAt(FormatUtil.formatDateTime(LocalDateTime.now()));
+        articleChapter.setCreatedAtDateTime(LocalDateTime.now());
         articleChapter.setDelta(delta);
         articleChapter.setHtmlContent(htmlContent);
         article.addChapter(articleChapter);
@@ -75,6 +76,7 @@ public class ArticleChapterController {
                                        @PathVariable Long articleId,
                                        @PathVariable Long articleChapterId,
                                        @RequestParam String createdAt,
+                                       @RequestParam LocalDateTime createdAtDateTime,
                                        @RequestParam int articleIndex,
                                        @ModelAttribute ArticleChapter articleChapter) {
 
@@ -82,6 +84,7 @@ public class ArticleChapterController {
         articleChapter.setId(articleChapterId);
         articleChapter.setArticle(articleDAO.findById(articleId));
         articleChapter.setCreatedAt(createdAt);
+        articleChapter.setCreatedAtDateTime(createdAtDateTime);
         articleChapter.setDelta(delta);
         articleChapter.setHtmlContent(html);
         articleChapterDAO.update(articleChapter);

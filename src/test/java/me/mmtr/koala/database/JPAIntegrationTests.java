@@ -1,6 +1,5 @@
 package me.mmtr.koala.database;
 
-import jakarta.transaction.Transactional;
 import me.mmtr.koala.KoalaApplication;
 import me.mmtr.koala.model.User;
 import me.mmtr.koala.repository.UserRepository;
@@ -16,7 +15,6 @@ public class JPAIntegrationTests {
     private UserRepository userRepository;
 
     @Test
-    @Transactional
     public void shouldOKWhenSaveAndRetrieveEntity() {
         User user = new User();
         user.setName("Test");

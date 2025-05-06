@@ -46,11 +46,11 @@ public class ApplicationMainController {
 
         List<Article> articles;
         if (keyword != null) {
-            articles = getAllArticlesExceptPrincipal(user)
+            articles = getAllArticlesExceptCreatedBy(user)
                     .filter(article -> article.getTitle().contains(keyword))
                     .toList();
         } else {
-            articles = getAllArticlesExceptPrincipal(user).toList();
+            articles = getAllArticlesExceptCreatedBy(user).toList();
         }
 
         session.setAttribute("principalUser", user);
@@ -184,7 +184,7 @@ public class ApplicationMainController {
         return "redirect:/profile/" + username;
     }
 
-    private Stream<Article> getAllArticlesExceptPrincipal(User user) {
+    private Stream<Article> getAllArticlesExceptCreatedBy(User user) {
         return articleDAO.findAll()
                 .stream()
                 .filter(article -> !article.getAuthor().equals(user.getName()));

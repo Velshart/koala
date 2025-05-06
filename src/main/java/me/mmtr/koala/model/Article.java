@@ -22,7 +22,7 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Length(max = 1000)
+    @Length(max = 100, message = "Title too long.")
     private String title;
 
     private String author;

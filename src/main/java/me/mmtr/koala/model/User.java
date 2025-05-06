@@ -29,7 +29,7 @@ public class User {
     @JoinTable(name = "user_followers", joinColumns = {
             @JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {
-            @JoinColumn(name = "FOLLOWER_ID", referencedColumnName = "ID")}
+                    @JoinColumn(name = "FOLLOWER_ID", referencedColumnName = "ID")}
     )
     private List<User> followers;
 
@@ -39,6 +39,7 @@ public class User {
     public void addFollower(User user) {
         followers.add(user);
     }
+
     public void removeFollower(User user) {
         followers.remove(user);
     }

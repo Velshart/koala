@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +11,6 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "article")
 @Table(name = "chapters")
 public class ArticleChapter {
 
@@ -36,5 +34,16 @@ public class ArticleChapter {
     @JoinColumn(name = "article_id")
     private Article article;
 
-
+    @Override
+    public String toString() {
+        return "ArticleChapter{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", delta='" + delta + '\'' +
+                ", htmlContent='" + htmlContent + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", createdAtDateTime=" + createdAtDateTime +
+                ", article=" + article.getId() +
+                '}';
+    }
 }

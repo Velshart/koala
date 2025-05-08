@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import me.mmtr.koala.model.record.IndexedArticleChapter;
 import org.hibernate.validator.constraints.Length;
 
@@ -16,7 +15,6 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"chapters", "ratings"})
 @Table(name = "articles")
 public class Article {
 
@@ -73,5 +71,17 @@ public class Article {
                 new IndexedArticleChapter(articleChapter, chapters.indexOf(articleChapter))
         ));
         return indexedArticleChapters;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", chapters=" + chapters.stream().map(ArticleChapter::getId).toList() +
+                ", ratings=" + ratings.stream().map(ArticleRating::getId).toList() +
+                '}';
     }
 }

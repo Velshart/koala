@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import java.util.Objects;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"followers"})
 @Table(name = "users")
 public class User {
     @Id
@@ -59,6 +57,19 @@ public class User {
                 Objects.equals(email, user.email) &&
                 Objects.equals(picture, user.picture) &&
                 Objects.equals(createdAt, user.createdAt);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", picture='" + picture + '\'' +
+                ", createdAt=" + createdAt +
+                ", followers=" + followers.stream().map(User::getId).toList() +
+                ", articleRatings=" + articleRatings +
+                '}';
     }
 
     @Override

@@ -1,4 +1,4 @@
-package me.mmtr.koala.database;
+package me.mmtr.koala.jpa;
 
 import me.mmtr.koala.KoalaApplication;
 import me.mmtr.koala.model.User;

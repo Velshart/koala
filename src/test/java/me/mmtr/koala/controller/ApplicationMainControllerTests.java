@@ -4,6 +4,7 @@ import me.mmtr.koala.model.Article;
 import me.mmtr.koala.model.User;
 import me.mmtr.koala.repository.UserRepository;
 import me.mmtr.koala.repository.dao.ArticleDAO;
+import me.mmtr.koala.utils.Oauth2Util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,15 +12,15 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -66,7 +67,9 @@ public class ApplicationMainControllerTests {
 
     @BeforeEach
     void setUp() {
-        OAuth2AuthenticationToken authentication = getOAuth2AuthenticationToken();
+        OAuth2AuthenticationToken authentication = Oauth2Util.getOAuth2AuthenticationToken(
+                TEST_USER_NAME, TEST_USER_EMAIL, TEST_USER_PICTURE
+        );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -121,24 +124,6 @@ public class ApplicationMainControllerTests {
         session.setAttribute("principalUser", testUser);
 
         Mockito.when(articleDAO.findAll()).thenReturn(List.of(firstTestArticle, secondTestArticle, thirdTestArticle));
-    }
-
-    private OAuth2AuthenticationToken getOAuth2AuthenticationToken() {
-        Map<String, Object> attributes = Map.of(
-                "name", TEST_USER_NAME,
-                "email", TEST_USER_EMAIL,
-                "picture", TEST_USER_PICTURE);
-        OAuth2User oauth2User = new DefaultOAuth2User(
-                List.of(new SimpleGrantedAuthority("ROLE_USER")),
-                attributes,
-                "email"
-        );
-
-        return new OAuth2AuthenticationToken(
-                oauth2User,
-                oauth2User.getAuthorities(),
-                "google"
-        );
     }
 
     @Test

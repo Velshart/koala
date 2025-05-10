@@ -98,7 +98,7 @@ public class ArticleController {
     @PostMapping("/delete/{articleId}")
     public String deleteArticle(@PathVariable Long articleId) {
         this.articleDAO.deleteById(articleId);
-        return "redirect:/home";
+        return "redirect:/";
     }
 
     @GetMapping("/view/{articleId}")

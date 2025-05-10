@@ -7,6 +7,7 @@ import me.mmtr.koala.repository.dao.ArticleDAO;
 import me.mmtr.koala.repository.dao.ArticleRatingDAO;
 import me.mmtr.koala.util.FormatUtil;
 import me.mmtr.koala.utils.Oauth2Util;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -58,14 +59,17 @@ public class ArticleRatingControllerTests {
 
     private ArticleRating secondArticleRating;
 
-    @BeforeEach
-    public void setUp() {
+    @BeforeAll
+    public static void setup() {
         OAuth2AuthenticationToken authentication = Oauth2Util.getOAuth2AuthenticationToken(
                 TEST_USER_NAME, TEST_USER_EMAIL, TEST_USER_PICTURE
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
 
+    @BeforeEach
+    public void setUp() {
         testUser = new User();
         testUser.setName(TEST_USER_NAME);
         testUser.setEmail(TEST_USER_EMAIL);

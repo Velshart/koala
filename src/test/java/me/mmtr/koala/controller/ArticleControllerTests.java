@@ -40,14 +40,6 @@ public class ArticleControllerTests {
     private static final String TEST_USER_EMAIL = "test@example.com";
     private static final String TEST_USER_PICTURE = "https://example.com/test.jpg";
     private static User testUser;
-    @Autowired
-    private MockMvc mockMvc;
-    @MockitoBean
-    private UserRepository userRepository;
-    @MockitoBean
-    private ArticleDAO articleDAO;
-    private MockHttpSession session;
-
     private final Article firstArticle = new Article(
             1L,
             "Article title1",
@@ -56,7 +48,6 @@ public class ArticleControllerTests {
             new ArrayList<>(),
             new ArrayList<>()
     );
-
     private final Article secondArticle = new Article(
             2L,
             "Article title2",
@@ -65,6 +56,13 @@ public class ArticleControllerTests {
             new ArrayList<>(),
             new ArrayList<>()
     );
+    @Autowired
+    private MockMvc mockMvc;
+    @MockitoBean
+    private UserRepository userRepository;
+    @MockitoBean
+    private ArticleDAO articleDAO;
+    private MockHttpSession session;
 
     @BeforeAll
     static void setup() {

@@ -151,10 +151,12 @@ public class ArticleControllerTests {
     @Test
     void shouldCorrectlyDeleteArticle() throws Exception {
         mockMvc.perform(post("/articles/delete/" + firstArticle.getId())
+                        .session(session)
                         .with(csrf())
                 )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl(String.format("/articles/user-articles/%s",
+                        testUser.getName())));
     }
 
     @Test

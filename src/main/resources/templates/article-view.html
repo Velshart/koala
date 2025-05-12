@@ -52,6 +52,10 @@
             <form th:action="@{/articles/update/{articleId}(articleId=${article.id})}" method="get">
                 <input type="hidden" name="createdAt" th:value="${article.createdAt}">
                 <button type="submit" class="btn btn-primary">Change title</button>
+            </form><br>
+
+            <form th:action="@{/articles/delete/{articleId}(articleId=${article.id})}" method="post">
+                <button type="submit" class="btn btn-outline-danger">Delete</button>
             </form>
             <br>
         </div>

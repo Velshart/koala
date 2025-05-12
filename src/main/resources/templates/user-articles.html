@@ -14,16 +14,6 @@
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
 <div class="container">
-    <div class="btn-group gap-2" role="group">
-        <form action="/articles/new" method="get" class="me-2">
-            <button type="submit" class="btn btn-success">Create new article</button>
-        </form>
-
-        <form action="/logout" method="get">
-            <button type="submit" class="btn btn-danger">Log out</button>
-        </form>
-    </div>
-
     <h3 th:text="${username} + '\'s ' + 'articles'"></h3>
 
     <div class="row row-cols-1 g-3">
